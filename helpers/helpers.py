@@ -132,3 +132,81 @@ class Cards:
         }
         response = requests.put(url=url, headers=headers, params=query)
         return response
+
+    def get_checklist_on_card(self, card_id):
+        url = f"https://api.trello.com/1/cards/{card_id}/checklists"
+        query = {
+            'key': self.TRELLO_API_KEY,
+            'token': self.TRELLO_TOKEN
+        }
+        response = requests.get(url=url, params=query)
+        return response
+
+
+# Helpers to interact with the checklist
+class Checklists:
+    def __init__(self, TRELLO_TOKEN, TRELLO_API_KEY, ORGANIZATION_ID):
+        self.TRELLO_TOKEN = TRELLO_TOKEN
+        self.TRELLO_API_KEY = TRELLO_API_KEY
+        self.ORGANIZATION_ID = ORGANIZATION_ID
+
+    # Return response of POST request
+    def create_checklist(self, card_id, name=f"Checklist {uuid4()}"):
+        url = "https://api.trello.com/1/checklists"
+        query = {
+            'idCard': card_id,
+            'name': name,
+            'key': self.TRELLO_API_KEY,
+            'token': self.TRELLO_TOKEN
+        }
+
+        response = requests.post(url=url, params=query)
+        return response
+
+    # Return response of PUT request
+
+    def update_checklist(self, checklist_id, name=f"Updated Checklist {uuid4()}"):
+        url = f"https://api.trello.com/1/checklists/{checklist_id}"
+        query = {
+            'name': name,
+            'key': self.TRELLO_API_KEY,
+            'token': self.TRELLO_TOKEN
+        }
+
+        response = requests.put(url=url, params=query)
+        return response
+
+    # Return response of POST request
+    def add_checkitem_to_checklist(self, checklist_id, is_checked=False, name=f"Item - {uuid4()}"):
+        url = f"https://api.trello.com/1/checklists/{checklist_id}/checkItems"
+        query = {
+            'name': name,
+            'checked': is_checked,
+            'key': self.TRELLO_API_KEY,
+            'token': self.TRELLO_TOKEN
+        }
+
+        response = requests.post(url=url, params=query)
+        return response
+
+    # Return response of GET request
+    def get_checkitems(self, checklist_id):
+        url = f"https://api.trello.com/1/checklists/{checklist_id}/checkItems"
+        query = {
+            'key': self.TRELLO_API_KEY,
+            'token': self.TRELLO_TOKEN
+        }
+
+        response = requests.get(url=url, params=query)
+        return response
+
+    # Return status code of DELETE request
+    def delete_checklist_by_id(self, checklist_id):
+        url = f"https://api.trello.com/1/checklists/{checklist_id}"
+        query = {
+            'key': self.TRELLO_API_KEY,
+            'token': self.TRELLO_TOKEN
+        }
+
+        response = requests.delete(url=url, params=query)
+        return response.status_code
