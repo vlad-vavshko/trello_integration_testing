@@ -85,9 +85,9 @@ def test_delete_checklist_from_card():
     print(checklist_on_card)
     assert_that(checklist_on_card).is_empty()
 
-
-
     boards.delete_board_by_id(board_id)
+
+
 def test_get_checklist():
     # Arrange
     board_id = boards.create_new_board()
@@ -103,4 +103,3 @@ def test_get_checklist():
 
     # Assert
     assert_that(checklist_on_card[0]['id']).is_equal_to(new_checklist['id'])
-
